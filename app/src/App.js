@@ -19,7 +19,24 @@ function App() {
       <Route
         exact
         path="/"
-        render={() => <h1>Welcome to my Friends Site</h1>}
+        render={() => {
+          return (
+            <div
+              style={{
+                marginTop: "0px",
+                height: "100vh",
+                backgroundImage:
+                  "url(https://www.rollingstone.com/wp-content/uploads/2019/09/FriendsLead.jpg)",
+              }}
+            >
+              <h1 style={{ margin: "0px" }}>Welcome to my Friends Site</h1>
+              {/* <img
+                alt="friends"
+                src="https://www.rollingstone.com/wp-content/uploads/2019/09/FriendsLead.jpg"
+              /> */}
+            </div>
+          );
+        }}
       />
     </div>
   );
