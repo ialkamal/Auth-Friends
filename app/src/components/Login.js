@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axiosWithAuth from "../utils/axiosWithAuth";
 
 function Login(props) {
@@ -8,6 +9,7 @@ function Login(props) {
   };
 
   const [credentials, setCredentials] = useState(initialState);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,7 +17,8 @@ function Login(props) {
       .post("/api/login", credentials)
       .then((res) => {
         window.localStorage.setItem("token", res.data.payload);
-        props.history.push("/protected");
+        props.setLogSt(true);
+        history.push("/protected");
       })
       .catch((err) => console.log(err));
   };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar(props) {
   return (
     <div>
       <header
@@ -20,8 +20,14 @@ function Navbar() {
         <Link
           style={{ margin: "10px", textDecoration: "none", color: "black" }}
           to="/login"
+          onClick={() => {
+            if (props.logSt) {
+              props.setLogSt(false);
+              window.localStorage.removeItem("token");
+            }
+          }}
         >
-          Login
+          {props.logSt ? "Logout" : "Login"}
         </Link>
         <Link
           style={{ margin: "10px", textDecoration: "none", color: "black" }}
