@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useForm from "../hooks/useForm";
 import axiosWithAuth from "../utils/axiosWithAuth";
 
@@ -6,7 +6,6 @@ const initialState = {
   name: "",
   age: "",
   email: "",
-  isEditing: false,
 };
 
 function Friends() {
@@ -15,16 +14,13 @@ function Friends() {
     initialState
   );
   const [editMode, setEditMode] = useState(false);
+  const friendRef = useRef(null);
 
   useEffect(() => {
     axiosWithAuth()
       .get("/api/friends")
       .then((res) => {
-        setFriends(
-          res.data.map((item) => {
-            return { ...item, isEditing: false };
-          })
-        );
+        setFriends(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -33,40 +29,23 @@ function Friends() {
     axiosWithAuth()
       .delete(`/api/friends/${id}`)
       .then((res) => {
-        setFriends(
-          res.data.map((item) => {
-            return { ...item, isEditing: false };
-          })
-        );
+        setFriends(res.data);
       })
       .catch((err) => console.log(err));
   };
 
   const handleEdit = (friend) => {
-    setFriend(friend);
-    setFriends(
-      friends.map((editFriend) => {
-        if (friend.id === editFriend.id)
-          return { ...editFriend, isEditing: true };
-        return editFriend;
-      })
-    );
     setEditMode(true);
+    setFriend(friend);
+    friendRef.current = friend;
   };
 
   const saveEdit = (e) => {
     e.preventDefault();
-    const [editFriend] = friends.filter((friend) => {
-      return friend.isEditing;
-    });
     axiosWithAuth()
-      .put(`/api/friends/${editFriend.id}`, newFriend)
+      .put(`/api/friends/${friendRef.current.id}`, newFriend)
       .then((res) => {
-        setFriends(
-          res.data.map((item) => {
-            return { ...item, isEditing: false };
-          })
-        );
+        setFriends(res.data);
       })
       .catch((err) => console.log(err));
 
