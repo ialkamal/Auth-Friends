@@ -18,6 +18,7 @@ function Login(props) {
       .then((res) => {
         window.localStorage.setItem("token", res.data.payload);
         props.setLogSt(true);
+        setCredentials(initialState);
         history.push("/protected");
       })
       .catch((err) => console.log(err));
@@ -34,12 +35,14 @@ function Login(props) {
         <input
           type="text"
           name="username"
+          value={credentials.username}
           placeholder="User name"
           onChange={handleChange}
         />
         <input
           type="password"
           name="password"
+          value={credentials.password}
           placeholder="Password"
           onChange={handleChange}
         />
